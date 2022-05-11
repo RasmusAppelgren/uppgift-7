@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import Movie from "./Movie";
    /* Funktioner
     Er webbsida ska ha följande funktioner:
@@ -18,18 +18,23 @@ export default function MovieList() {
         grade: ""
     }]);
 
-    const [title, setTitle] = useState('');
-    const [grade, setGrade] = useState('');
-    function addItem(){
+    
+    const inputTitle = useRef();
+    const inputGrade = useRef();
+  
+    function addItem(event){
+        console.log("SUBMIT!")
+        event.preventDefault()
+        
         const newId = movies.length > 0 ? movies[movies.length - 1].id + 1 : 1;
         setMovies([...movies, {
             id: newId,
-            title: title,
-            grade: grade,
+            title: inputTitle.current.value,
+            grade: parseInt(inputGrade.current.value),
         }]);
     
-        title.current.value = "";
-        grade.current.value = "";
+        inputTitle.current.value = "";
+        inputGrade.current.value = "";
     
     }
     
@@ -40,9 +45,13 @@ export default function MovieList() {
 
     return (
         <div>
-            <form>
-            <input className="form-control" placeholder="Ange filmtitel här" value={title}   name="title" onChange={e => setTitle(e.target.value)}></input>
-            <select value={grade} name="grade" onChange={e => setGrade(e.target.value)}> 
+            <form onSubmit={addItem}>
+
+
+            <input className="form-control" placeholder="Ange filmtitel här" ref={inputTitle} it="title"></input>
+
+
+            <select ref={inputGrade} id="grade"> 
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -50,7 +59,7 @@ export default function MovieList() {
                 <option value="5">5</option>
             </select>
             
-            <input type="submit" className="btn btn-success mt-3" value="Spara film" onSubmit={e => addItem()}></input>
+            <input type="submit" className="btn btn-success mt-3" value="Spara film"></input>
             </form>
 
             <ul className="list-group">

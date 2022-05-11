@@ -12,21 +12,9 @@ import Movie from "./Movie";
 */
 function Form() {
     const [state, setState] = React.useState({
-        id = 1,
         title: "",
         grade: ""
     })
-
-    function addItem(e) {
-        const newId = movies.length > 0 ? movies[movies.length - 1].id + 1 : 1;
-        setMovies({
-            ...movies, 
-            id: newId,
-            title: inputRef.current.value
-        );
-    }
-
-
     return (
         <div>
             <fieldset>
@@ -34,18 +22,18 @@ function Form() {
             <input className="form-control" placeholder="Ange filmtitel här" type="text" value={state.title} onChange={handleChange} name="title"></input>
             </label>
 
-            <select name="grade" onChange={handleChange} value={state.version}>
+            <select name="version" onChange={handleChange} value={state.version}>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
             </select>
-            <input type="submit" className="btn btn-success mt-3" value="Spara film" onSubmit={addItem}></input>
+            <input type="submit" className="btn btn-success mt-3" value="Spara film" ref={inputRef} onSubmit={addItem}></input>
             </fieldset>
 
             <ul className="list-group">
-                { state.map(movie => <Movie key={movie.id} item={movie} deleteItem={deleteItem} grade={movie.grade} />)}
+                { movies.map(movie => <Movie key={movie.id} item={movie} deleteItem={deleteItem} grade={movie.grade} />)}
             </ul>
         </div>
     )
