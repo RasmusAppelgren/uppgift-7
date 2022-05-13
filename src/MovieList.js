@@ -18,7 +18,7 @@ export default function MovieList() {
     const [movies, setMovies] = useState([{
         id: 1,
         title: "First movie",
-        grade: ""
+        grade: "5"
     }]);
 
     
@@ -27,8 +27,8 @@ export default function MovieList() {
    
   
     function addItem(event){
-        console.log("SUBMIT!")
-        event.preventDefault()
+        
+        event.preventDefault();
 
         if (inputTitle.current.value === "") {
             alert("Du måste ange en titel för att kunna spara filmen");
@@ -50,23 +50,17 @@ export default function MovieList() {
         inputTitle.current.value = "";
         inputGrade.current.value = "";
     }
-    function sortbyAscending(props) {
+    function sortbyGrade() {
         let sortedMovies = [...movies];
-        sortedMovies.sort((a, b) => {
-            if (a[sortedMovies] < b[sortedMovies]) {
-                return -1;
-            }
-            
-            if (a[sortedMovies] > b[sortedMovies]) {
-                return 1; 
-            }
-
-            return 0;
-        });
-        setMovies(sortedMovies)
-        console.log(sortedMovies)
-
-    
+        sortedMovies.sort(function(a,b){
+            return parseInt(b.grade)  - parseInt(a.grade);
+           }) 
+        setMovies(sortedMovies);     
+    }
+    function sortbyAscending() {
+        let movieToSort = [...movies];
+        const sortedItems = movieToSort.sort((a,b) => a.title.localeCompare(b.title))
+        setMovies(sortedItems);    
     }
     
     function deleteItem(id) {
@@ -101,9 +95,24 @@ export default function MovieList() {
             <button id="order-alphabetic" className="btn btn-primary" onClick={() => sortbyAscending()}>
                 Alfabetisk ordning
             </button>
-            <button id="order-grade" className="btn btn-primary">
+            <button id="order-grade" className="btn btn-primary" onClick={() => sortbyGrade()}>
                 Betygsordning
             </button>
         </div>
     )
 }
+
+
+/*
+sortedMovies.sort((a, b) => {
+            if (a[sortedMovies] < b[sortedMovies]) {
+                return -1;
+            }
+            
+            if (a[sortedMovies] > b[sortedMovies]) {
+                return 1; 
+            }
+
+            return 0;
+        });
+        */
