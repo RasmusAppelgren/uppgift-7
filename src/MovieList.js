@@ -1,19 +1,7 @@
 import React, {useState, useRef} from "react";
 import Movie from "./Movie";
 
-   /* Funktioner
-    Er webbsida ska ha följande funktioner:
-    Funkar
-   1.  Användare ska kunna lägga till en film genom att ange en titel och ett betyg.
-   3. Formuläret återställs efter en film är tillagd
-   4. En film i listan ska representeras av titel (text) och stjärnor (så många stjärn-ikoner som betyget filmen har)
-   5. Användare ska kunna ta bort en film genom att klicka på ikonen med ett kryss
-   2. Ni ska validera att användaren angett både titel och betyg har angetts innan en film kan sparas. Återkoppling ska ske genom popup-rutor.
 
-   Kvar att göra 
-   6. I denna uppgift ska ni implementera sorterings-funktionerna (sortering enligt alfabetisk ordning, samt efter filmens betyg)
-*/
-    
 export default function MovieList() {
     const [movies, setMovies] = useState([{
         id: 1,
@@ -21,11 +9,11 @@ export default function MovieList() {
         grade: "5"
     }]);
 
-    
+    // Tar input och lägger i variabler
     const inputTitle = useRef();
     const inputGrade = useRef();
    
-  
+    // Först kontrolleras input så det inte är tomt, om tomt skickas prompt
     function addItem(event){
         
         event.preventDefault();
@@ -41,15 +29,18 @@ export default function MovieList() {
         }
         
         const newId = movies.length > 0 ? movies[movies.length - 1].id + 1 : 1;
+        // setMovies skickar in datan till movies
         setMovies([...movies, {
             id: newId,
             title: inputTitle.current.value,
             grade: parseInt(inputGrade.current.value),
      
         }]);
+        // Rensar fälten efter att filmen är tillagd
         inputTitle.current.value = "";
         inputGrade.current.value = "";
     }
+    // När användaren klickar på sortera efter betyg så körs funktionen nedan.
     function sortbyGrade() {
         let sortedMovies = [...movies];
         sortedMovies.sort(function(a,b){
@@ -57,19 +48,26 @@ export default function MovieList() {
            }) 
         setMovies(sortedMovies);     
     }
+    // När användaren klickar på att sortera efter bokstavsordning så körs funktionen nedan.
     function sortbyAscending() {
         let movieToSort = [...movies];
         const sortedItems = movieToSort.sort((a,b) => a.title.localeCompare(b.title))
         setMovies(sortedItems);    
     }
-    
+    /* 
+    Sparar alla filmer som inte matchar ID:et till filmen som är klickad på.
+    På så vis försvinner filmen bort från listan.
+    */
     function deleteItem(id) {
         setMovies(movies.filter((item) => item.id !== id));
 
     }
 
 
-
+    /*
+    Returnerar html-elementen med inputfält och för varje film i "movies"
+    skapas ett li-element med tillhörande stjärnor och ta bort knapp.
+    */
     return (
         <div>
             <form onSubmit={addItem}>
@@ -103,16 +101,3 @@ export default function MovieList() {
 }
 
 
-/*
-sortedMovies.sort((a, b) => {
-            if (a[sortedMovies] < b[sortedMovies]) {
-                return -1;
-            }
-            
-            if (a[sortedMovies] > b[sortedMovies]) {
-                return 1; 
-            }
-
-            return 0;
-        });
-        */
